@@ -1,0 +1,31 @@
+.root {
+  width: 100vw;
+  background-color: beige;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.titleContainer {
+  width: 1000px;
+  height: 200px;
+  background-color: bisque;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.dataContainer {
+  margin-top: 50px;
+  width: 1000px;
+  height: 200px;
+  background-color: bisque;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.button {
+  margin-top: 20px;
+  width: 200px;
+}
