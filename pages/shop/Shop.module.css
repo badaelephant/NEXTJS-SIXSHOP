@@ -18,14 +18,18 @@
 .dataContainer {
   margin-top: 50px;
   width: 1000px;
-  height: 200px;
+  min-height: 200px;
   background-color: bisque;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 .button {
   margin-top: 20px;
   width: 200px;
+}
+.listItems {
+  width: 500px;
+  display: flex;
 }

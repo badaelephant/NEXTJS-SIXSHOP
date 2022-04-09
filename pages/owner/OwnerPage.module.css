@@ -1,0 +1,26 @@
+.root {
+  width: 100vw;
+  height: 100vh;
+  background-color: beige;
+  display: flex;
+  flex-direction: column;
+}
+.userContainer {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  background-color: aquamarine;
+}
+.userInfo {
+  width: 400px;
+  display: flex;
+}
+.userInfoLabel {
+  width: 150px;
+}
+.shopContainer {
+  margin-top: 20px;
+  width: 500px;
+  min-height: 100px;
+  background-color: aquamarine;
+}

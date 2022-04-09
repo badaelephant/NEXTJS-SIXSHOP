@@ -9,6 +9,7 @@ export default async function handler(req, res) {
 
   switch (method) {
     case "POST":
+      console.log("createShop", req.body);
       try {
         const createdShop = await db.collection("shops").insertOne({ _id: shopId, ...req.body });
         return res.status(200).json({
@@ -42,14 +43,15 @@ export default async function handler(req, res) {
         });
       }
     case "GET":
+      console.log("shop => get Data");
       try {
-        const shop = await db.collection("shops").findOne({ _id: id });
+        const shop = await db.collection("shops").findOne({ _id: id[0] });
 
         if (shop) {
-          const customers = await db.collection("customers").find({ store: id });
-          const products = await db.collection("products").find({ store: id });
-          const orders = await db.collection("orders").find({ store: id });
-          const customs = await db.collection("customs").find({ store: id });
+          const customers = await db.collection("customers").find({ store: id[0] }).toArray();
+          const products = await db.collection("products").find({ store: id[0] }).toArray();
+          const orders = await db.collection("orders").find({ store: id[0] }).toArray();
+          const customs = await db.collection("customs").find({ store: id[0] }).toArray();
           return res.status(200).json({
             success: true,
             msg: "Shop Info Searched!!",

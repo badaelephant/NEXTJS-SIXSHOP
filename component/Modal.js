@@ -1,5 +1,18 @@
+import axios from "axios";
+import { useEffect } from "react";
 import styles from "./Modal.module.css";
-export default function Modal({ fields }) {
+export default function Modal({ fields, defaultData, collection, setOpenModal, callback }) {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    let inputs = defaultData;
+    fields.forEach((field, idx) => {
+      inputs[field] = e.target[idx].value;
+    });
+    await axios.post(`/api/${collection}`, { ...inputs });
+    callback();
+    setOpenModal(false);
+  };
+
   return (
     <div className={styles.root}>
       <div className={styles.container}>
@@ -7,14 +20,16 @@ export default function Modal({ fields }) {
           <div className={styles.headerTitle}>Title</div>
           <button className={styles.closeButton}>X</button>
         </div>
-        <div>
+        <form className={styles.form} onSubmit={handleSubmit}>
           {fields.map((field) => (
-            <div>
-              <label>{field}</label> <input />
+            <div key={field}>
+              <label>{field}</label> <input name={field} />
             </div>
           ))}
-        </div>
-        <button className={styles.button}>Save</button>
+          <button className={styles.button} type="submit">
+            Save
+          </button>
+        </form>
       </div>
     </div>
   );

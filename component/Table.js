@@ -1,4 +1,4 @@
-export default function ({ datalist }) {
+export default function Table({ datalist }) {
   console.log(Object.keys(datalist[0]), Object.values(datalist[0]));
 
   return (

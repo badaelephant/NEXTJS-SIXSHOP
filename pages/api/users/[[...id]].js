@@ -63,18 +63,10 @@ export default async function handler(req, res) {
       }
 
     case "GET":
-      const savedUser = await db
-        .collection("users")
-        .find({ _id: id })
-        .toArray()
-        .catch((err) => {
-          return res.status(500).json({
-            success: false,
-            msg: err,
-          });
-        });
+      const savedUser = await db.collection("users").findOne({ _id: id[0] });
+
       if (savedUser) {
-        const shops = await db.collection("shops").find({ ownerId: id });
+        const shops = await db.collection("shops").find({ ownerId: id[0] }).toArray();
         return res.status(200).json({
           success: true,
           msg: "User Info Searched!!",
