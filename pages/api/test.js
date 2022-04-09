@@ -1,5 +1,5 @@
-import connectDB from "../../../util/mongodb";
-import { Test } from "../../../models/Test";
+import connectDB from "../../util/mongodb";
+import { Test } from "../../models/Test";
 
 const handler = async (req, res) => {
   const method = req.method;

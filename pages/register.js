@@ -1,13 +1,21 @@
+import axios from "axios";
 import { useState } from "react";
 import styles from "./Register.module.css";
+import { useRouter } from "next/router";
 export default function Register() {
+  const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("owner");
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    console.log("handleRegister", { name, email, password, role });
+    const result = await axios.post("/api/users/register", { name, email, password, role });
+    if (result.data?.success) {
+      router.push("/");
+    } else {
+      alert("register failed");
+    }
   };
 
   return (
@@ -21,9 +29,9 @@ export default function Register() {
         <input onChange={(e) => setPassword(e.currentTarget.value)} value={password} />
         <div>
           <input type="radio" id="owner" value="owner" checked="checked" onChange={() => setRole("owner")} />
-          <label for="dewey">Owner</label>
+          <label>Owner</label>
           <input type="radio" id="customer" value="customer" onChange={() => setRole("customer")} />
-          <label for="louie">Customer</label>
+          <label>Customer</label>
         </div>
 
         <button type="submit">Register</button>

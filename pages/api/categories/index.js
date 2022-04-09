@@ -1,19 +1,17 @@
-import connectDB from "../../util/mongodb";
-import { Category } from "../../models/Category";
+import clientPromise from "../../../middlewares/database";
 
-const handler = async (req, res) => {
+export default async function handler(req, res) {
   const method = req.method;
-
+  const client = await clientPromise;
+  const db = client.db("sixshop");
+  const categoryId = `category-${new Date().valueOf()}`;
   switch (method) {
     case "POST":
-      const { name } = req.body;
       try {
-        const newCategory = new Category({ name });
-        const createdCategory = await newCategory.save();
+        await db.collection("categories").insertOne({ _id: categoryId, ...req.body });
         return res.status(200).json({
           success: true,
           msg: "New Category Created",
-          data: createdCategory,
         });
       } catch (error) {
         return res.status(500).json({
@@ -23,7 +21,16 @@ const handler = async (req, res) => {
       }
 
     case "GET":
-      const savedCategories = await Category.find(); //search savedTest by name;
+      const savedCategories = await db
+        .collection("categories")
+        .find({})
+        .toArray()
+        .catch((err) => {
+          return res.status(500).json({
+            success: false,
+            msg: err,
+          });
+        });
       if (savedCategories)
         return res.status(200).json({
           success: true,
@@ -34,5 +41,4 @@ const handler = async (req, res) => {
     default:
       break;
   }
-};
-export default connectDB(handler);
+}
