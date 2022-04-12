@@ -7,13 +7,12 @@
   align-items: center;
 }
 .titleContainer {
+  margin-top: 50px;
   width: 1000px;
   height: 200px;
   background-color: bisque;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 .dataContainer {
   margin-top: 50px;

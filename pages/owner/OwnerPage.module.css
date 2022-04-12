@@ -4,6 +4,8 @@
   background-color: beige;
   display: flex;
   flex-direction: column;
+  justify-content: baseline;
+  align-items: center;
 }
 .userContainer {
   width: 500px;
@@ -21,6 +23,7 @@
 .shopContainer {
   margin-top: 20px;
   width: 500px;
+  height: 500px;
   min-height: 100px;
   background-color: aquamarine;
 }

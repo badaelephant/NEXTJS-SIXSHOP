@@ -41,7 +41,7 @@ export default function OwnerPage(props) {
       )}
       <div className={styles.shopContainer}>
         <button onClick={() => setOpenModal(true)}>Create Shop</button>
-        <div>-----MyShops-----Click to go in</div>
+        <div style={{ textAlign: "center", marginBottom: "20px" }}>//////////////////////////Shop List////////////////////////////</div>
         {shopData.map((shop) => (
           <button key={shop._id} onClick={() => goShopDetail(shop._id)}>
             {shop.name}
@@ -50,6 +50,7 @@ export default function OwnerPage(props) {
       </div>
       {openModal && (
         <Modal
+          title={"Create Shop"}
           setOpenModal={setOpenModal}
           fields={["name", "location"]}
           defaultData={{ ownerId: id }}

@@ -52,6 +52,7 @@ export default function Shop(props) {
     if (item === "customs") {
       //custom create 고정
       modalInfo.current = {
+        title: item,
         fields: ["collectionName", "fieldName", "fieldType"],
         defaultData: { store: id },
         collection: item,
@@ -62,6 +63,7 @@ export default function Shop(props) {
       customs.filter((custom) => custom.collectionName === item && fieldList.push(custom.fieldName));
 
       modalInfo.current = {
+        title: item,
         fields: ["name", "price", "categories", ...fieldList],
         defaultData: { store: id },
         collection: item,
@@ -72,6 +74,7 @@ export default function Shop(props) {
   return (
     <div className={styles.root}>
       <div className={styles.titleContainer}>
+        <div>///////////Product////////////</div>
         <div>This is Shop Page</div>
         {props.success && (
           <div>
@@ -81,36 +84,53 @@ export default function Shop(props) {
         )}
       </div>
       <div className={styles.dataContainer}>
-        <div>Custom Field List</div>
+        <div>/////////Custom Field////////</div>
         <button style={{ marginBottom: "20px" }} onClick={() => onClickCreate("customs")}>
           Create Custom Field
         </button>
-        {customs.map((custom, idx) => (
-          <div className={styles.listItems} key={custom.fieldName}>
-            <div style={{ width: "30px", textAlign: "center" }}>{idx + 1}</div>
+        {customs.length > 0 ? (
+          customs.map((custom, idx) => (
+            <div className={styles.listItems} key={custom.fieldName}>
+              <div style={{ width: "30px", textAlign: "center" }}>{idx + 1}</div>
 
-            <CustomsInput custom={custom} updateCustom={updateCustom} deleteCustom={deleteCustom} />
-          </div>
-        ))}
+              <CustomsInput custom={custom} updateCustom={updateCustom} deleteCustom={deleteCustom} />
+            </div>
+          ))
+        ) : (
+          <div style={{ width: "100%", textAlign: "center", marginTop: "30px", color: "red" }}>There are no Customs...</div>
+        )}
       </div>
       <div className={styles.dataContainer}>
-        <div>This is Our Product</div>
+        <div>///////////Product////////////</div>
         <button style={{ marginBottom: "20px" }} onClick={() => onClickCreate("products")}>
           Create Product
         </button>
-        {products.length > 0 ? <Table datalist={products} /> : <div>There are no Products</div>}
+        {products.length > 0 ? (
+          <Table datalist={products} />
+        ) : (
+          <div style={{ width: "100%", textAlign: "center", marginTop: "30px", color: "red" }}>There are no Products...</div>
+        )}
       </div>
       <div className={styles.dataContainer}>
-        <div>This is Our Customer</div>
-        {customers.length > 0 && <Table datalist={customers} />}
+        <div>///////////Customer////////////</div>
+        {customers.length > 0 ? (
+          <Table datalist={customers} />
+        ) : (
+          <div style={{ width: "100%", textAlign: "center", marginTop: "70px", color: "red" }}>There are no Customers...</div>
+        )}
       </div>
 
       <div className={styles.dataContainer}>
-        <div>This is Our Order</div>
-        {orders.length > 0 && <OwnerOrderTable datalist={orders} callback={refetchData} />}
+        <div>/////////////Order/////////////</div>
+        {orders.length > 0 ? (
+          <OwnerOrderTable datalist={orders} callback={refetchData} />
+        ) : (
+          <div style={{ width: "100%", textAlign: "center", marginTop: "70px", color: "red" }}>There are no Orders...</div>
+        )}
       </div>
       {openModal && (
         <Modal
+          title={modalInfo.current.title}
           setOpenModal={setOpenModal}
           fields={modalInfo.current.fields}
           defaultData={modalInfo.current.defaultData}

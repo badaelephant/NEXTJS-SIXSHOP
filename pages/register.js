@@ -10,11 +10,15 @@ export default function Register() {
   const [role, setRole] = useState("owner");
   const handleRegister = async (e) => {
     e.preventDefault();
-    const result = await axios.post("/api/users/register", { name, email, password, role });
-    if (result.data?.success) {
-      router.push("/");
+    if (name == "" || email == "" || password == "") {
+      alert("please write down all information correctly");
     } else {
-      alert("register failed");
+      const result = await axios.post("/api/users/register", { name, email, password, role }).catch(() => {
+        alert("register failed");
+      });
+      if (result?.data?.success) {
+        router.push("/");
+      }
     }
   };
 
@@ -24,11 +28,11 @@ export default function Register() {
         <label>name</label>
         <input onChange={(e) => setName(e.currentTarget.value)} value={name} />
         <label>email</label>
-        <input onChange={(e) => setEmail(e.currentTarget.value)} value={email} />
+        <input onChange={(e) => setEmail(e.currentTarget.value)} value={email} type="email" />
         <label>password</label>
-        <input onChange={(e) => setPassword(e.currentTarget.value)} value={password} />
+        <input onChange={(e) => setPassword(e.currentTarget.value)} value={password} type="password" />
         <div>
-          <input type="radio" name="role" value="owner" checked="checked" onChange={() => setRole("owner")} />
+          <input type="radio" name="role" value="owner" onChange={() => setRole("owner")} />
           <label>Owner</label>
           <input type="radio" name="role" value="customer" onChange={() => setRole("customer")} />
           <label>Customer</label>
