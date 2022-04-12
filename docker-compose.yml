@@ -1,0 +1,32 @@
+# Use root/example as user/password credentials
+version: "3.1"
+
+services:
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - ../docker_data/mongodb:/data/db
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+
+  frontail:
+    image: mthenw/frontail
+    command: /log/* -t frontail --ui-highlight
+    volumes:
+      - /home/ubuntu/.pm2/logs:/log
+      - ./frontail.css:/frontail/web/assets/styles/frontail.css
+    ports:
+      - 9001:9001
