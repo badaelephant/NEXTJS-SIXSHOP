@@ -10,7 +10,7 @@ export default function OwnerPage(props) {
   const [shopData, setShopData] = useState(props.shops);
 
   const goShopDetail = (id) => {
-    router.push(`/shop/${id}`);
+    router.push(`/shop/owner/${id}`);
   };
   const refetchData = async () => {
     console.log("refetchData");

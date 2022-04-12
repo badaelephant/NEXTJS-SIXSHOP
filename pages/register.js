@@ -28,9 +28,9 @@ export default function Register() {
         <label>password</label>
         <input onChange={(e) => setPassword(e.currentTarget.value)} value={password} />
         <div>
-          <input type="radio" id="owner" value="owner" checked="checked" onChange={() => setRole("owner")} />
+          <input type="radio" name="role" value="owner" checked="checked" onChange={() => setRole("owner")} />
           <label>Owner</label>
-          <input type="radio" id="customer" value="customer" onChange={() => setRole("customer")} />
+          <input type="radio" name="role" value="customer" onChange={() => setRole("customer")} />
           <label>Customer</label>
         </div>
 

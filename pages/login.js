@@ -26,10 +26,10 @@ export default function Login() {
         <label>password</label>
         <input onChange={(e) => setPassword(e.currentTarget.value)} value={password} />
         <div>
-          <input type="radio" id="owner" value="owner" checked="checked" onChange={() => setRole("owner")} />
-          <label for="dewey">Owner</label>
-          <input type="radio" id="customer" value="customer" onChange={() => setRole("customer")} />
-          <label for="louie">Customer</label>
+          <input type="radio" name="role" value="owner" onChange={() => setRole("owner")} />
+          <label>Owner</label>
+          <input type="radio" name="role" value="customer" onChange={() => setRole("customer")} />
+          <label>Customer</label>
         </div>
 
         <button type="submit">Login</button>

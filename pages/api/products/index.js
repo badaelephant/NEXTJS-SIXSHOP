@@ -11,12 +11,20 @@ export default async function handler(req, res) {
     case "POST":
       console.log("createProduct", req.body);
       try {
-        const createdProduct = await db.collection("products").insertOne({ _id: productId, ...req.body });
-        return res.status(200).json({
-          success: true,
-          msg: "New Product Created",
-          data: createdShop,
-        });
+        const productResult = await db.collection("products").findOne({ name: req.body.name });
+        if (productResult)
+          return res.status(200).json({
+            success: false,
+            msg: "There are product with same name",
+          });
+        else {
+          const createdProduct = await db.collection("products").insertOne({ _id: productId, ...req.body });
+          return res.status(200).json({
+            success: true,
+            msg: "New Product Created",
+            data: createdProduct,
+          });
+        }
       } catch (error) {
         return res.status(500).json({
           success: false,

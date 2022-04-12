@@ -27,6 +27,7 @@ export default async function handler(req, res) {
 
         try {
           const { email, role, password } = req.body;
+          console.log("login", { email, role, password });
           const user = await db.collection("users").findOne({ email, role, password });
           //TODO: later will be updated with jwt token base login
           if (user) {
@@ -70,7 +71,9 @@ export default async function handler(req, res) {
       const savedUser = await db.collection("users").findOne({ _id: id[0] });
 
       if (savedUser) {
-        const shops = await db.collection("shops").find({ ownerId: id[0] }).toArray();
+        let shops;
+        if (savedUser.role === "owner") shops = await db.collection("shops").find({ ownerId: id[0] }).toArray();
+        else shops = await db.collection("shops").find({}).toArray();
         return res.status(200).json({
           success: true,
           msg: "User Info Searched!!",

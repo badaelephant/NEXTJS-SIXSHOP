@@ -4,6 +4,7 @@ import axios from "axios";
 import { useRef, useState } from "react";
 import Table from "../../component/Table";
 import Modal from "../../component/Modal";
+import CustomsInput from "../../component/CustomsInput";
 export default function Shop(props) {
   const router = useRouter();
   const { id } = router.query;
@@ -16,22 +17,32 @@ export default function Shop(props) {
   const [openModal, setOpenModal] = useState(false);
   const modalInfo = useRef({});
 
-  const updateCustom = async (idx, custom) => {};
-  const deleteCustom = async (idx, custom) => {
+  const updateCustom = async (custom, fieldName) => {
+    console.log("fieldName", fieldName);
+    if (fieldName !== custom.fieldName) {
+      const result = await axios.patch(`/api/customs/${custom._id}`, { fieldName });
+      if (result.data?.success) {
+        refetchData();
+      }
+    }
+  };
+  const deleteCustom = async (custom) => {
+    console.log("custom", custom);
     const result = await axios.delete(`/api/customs/${custom._id}`);
     if (result.data?.success) {
-      let newList = customs.filter((data) => data._id !== custom._id);
-      setCustoms(newList);
+      refetchData();
     }
   };
   const refetchData = async () => {
     console.log("refetchData");
     const result = await axios.get(`/api/shops/${id}`);
     if (result.data?.success) {
-      let shopData = result.data.data?.shops;
+      console.log("result.data.data", result.data.data);
+      let shopData = result.data.data;
       //TODO : useSWR로 실시간 데이터 페칭
+
       setCustoms(shopData.customs);
-      setCustomers(shopData.customs);
+      setCustomers(shopData.customers);
       setProducts(shopData.products);
       setOrders(shopData.orders);
     }
@@ -40,15 +51,17 @@ export default function Shop(props) {
     if (item === "customs") {
       //custom create 고정
       modalInfo.current = {
-        fields: ["store", "collectionName", "fieldName", "fieldType"],
+        fields: ["collectionName", "fieldName", "fieldType"],
         defaultData: { store: id },
         collection: item,
       };
     } else {
       //products
-      let productCustoms = customs.filter((custom) => custom.collectionName === item);
+      let fieldList = [];
+      customs.filter((custom) => custom.collectionName === item && fieldList.push(custom.fieldName));
+
       modalInfo.current = {
-        fields: ["store", "name", "price", "categories", ...productCustoms],
+        fields: ["name", "price", "categories", ...fieldList],
         defaultData: { store: id },
         collection: item,
       };
@@ -74,9 +87,8 @@ export default function Shop(props) {
         {customs.map((custom, idx) => (
           <div className={styles.listItems} key={custom.fieldName}>
             <div style={{ width: "30px", textAlign: "center" }}>{idx + 1}</div>
-            <input value={custom.fieldName} />
-            <button onClick={() => updateCustom(idx, custom)}>update</button>
-            <button onClick={() => deleteCustom(idx, custom)}>delete</button>
+
+            <CustomsInput custom={custom} updateCustom={updateCustom} deleteCustom={deleteCustom} />
           </div>
         ))}
       </div>

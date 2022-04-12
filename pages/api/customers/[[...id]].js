@@ -21,14 +21,14 @@ export default async function handler(req, res) {
         });
       }
 
-    // case "GET":
-    //   const savedCustomers = await Customer.find(); //search savedCustomer by name;
-    //   if (savedCustomers)
-    //     return res.status(200).json({
-    //       success: true,
-    //       data: savedCustomers,
-    //     });
-    //   else return res.status(400).json({ success: false, msg: `There is no Customer` });
+    case "GET":
+      const savedCustomers = await Customer.find(); //search savedCustomer by name;
+      if (savedCustomers)
+        return res.status(200).json({
+          success: true,
+          data: savedCustomers,
+        });
+      else return res.status(400).json({ success: false, msg: `There is no Customer` });
 
     default:
       break;

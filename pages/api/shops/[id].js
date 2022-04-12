@@ -5,24 +5,8 @@ export default async function handler(req, res) {
   const method = req.method;
   const client = await clientPromise;
   const db = client.db("sixshop");
-  const shopId = `shop-${new Date().valueOf()}`;
 
   switch (method) {
-    case "POST":
-      console.log("createShop", req.body);
-      try {
-        const createdShop = await db.collection("shops").insertOne({ _id: shopId, ...req.body });
-        return res.status(200).json({
-          success: true,
-          msg: "New Shop Created",
-          data: createdShop,
-        });
-      } catch (error) {
-        return res.status(500).json({
-          success: false,
-          msg: error,
-        });
-      }
     case "UPDATE":
       //shop: delete불가. shop status만 변경가능
       try {
@@ -46,14 +30,16 @@ export default async function handler(req, res) {
 
     case "GET":
       console.log("shop => get Data");
+      console.log("get each infos", id);
       try {
-        const shop = await db.collection("shops").findOne({ _id: id[0] });
+        const shop = await db.collection("shops").findOne({ _id: id });
 
         if (shop) {
-          const customers = await db.collection("customers").find({ store: id[0] }).toArray();
-          const products = await db.collection("products").find({ store: id[0] }).toArray();
-          const orders = await db.collection("orders").find({ store: id[0] }).toArray();
-          const customs = await db.collection("customs").find({ store: id[0] }).toArray();
+          const customers = await db.collection("customers").find({ store: id }).toArray();
+          const products = await db.collection("products").find({ store: id }).toArray();
+          const orders = await db.collection("orders").find({ store: id }).toArray();
+          const customs = await db.collection("customs").find({ store: id }).toArray();
+          console.log({ customers, products, orders, customs });
           return res.status(200).json({
             success: true,
             msg: "Shop Info Searched!!",
