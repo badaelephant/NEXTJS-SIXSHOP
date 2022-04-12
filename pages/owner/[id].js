@@ -43,7 +43,9 @@ export default function OwnerPage(props) {
         <button onClick={() => setOpenModal(true)}>Create Shop</button>
         <div>-----MyShops-----Click to go in</div>
         {shopData.map((shop) => (
-          <button onClick={() => goShopDetail(shop._id)}>{shop.name}</button>
+          <button key={shop._id} onClick={() => goShopDetail(shop._id)}>
+            {shop.name}
+          </button>
         ))}
       </div>
       {openModal && (
