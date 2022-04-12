@@ -5,16 +5,16 @@ export default async function handler(req, res) {
   const method = req.method;
   const client = await clientPromise;
   const db = client.db("sixshop");
-  const shopId = `shop-${new Date().valueOf()}`;
+  const productId = `product-${new Date().valueOf()}`;
 
   switch (method) {
     case "POST":
-      console.log("createShop", req.body);
+      console.log("createProduct", req.body);
       try {
-        const createdShop = await db.collection("shops").insertOne({ _id: shopId, ...req.body });
+        const createdProduct = await db.collection("products").insertOne({ _id: productId, ...req.body });
         return res.status(200).json({
           success: true,
-          msg: "New Shop Created",
+          msg: "New Product Created",
           data: createdShop,
         });
       } catch (error) {
