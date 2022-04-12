@@ -14,9 +14,9 @@ export default function Table({ datalist }) {
         <tbody>
           {datalist.map((data) => (
             <tr>
-              {Object.values(data).map((v) => (
-                <td>{v}</td>
-              ))}
+              {Object.values(data).map((v) =>
+                typeof v === "object" ? <td style={{ width: "180px", fontSize: "13px" }}>{v.join("\r\n")}</td> : <td>{v}</td>
+              )}
             </tr>
           ))}
         </tbody>

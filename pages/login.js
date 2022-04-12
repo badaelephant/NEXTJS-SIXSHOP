@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import styles from "./Login.module.css";
 import { useRouter } from "next/router";
+import { setCookie } from "../lib/cookie";
 export default function Login() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -14,6 +15,7 @@ export default function Login() {
     if (result.data?.success) {
       const userInfo = result.data.data;
       console.log("userInfo", userInfo);
+      setCookie("userId", userInfo._id);
       router.push(`/${userInfo.role}/${userInfo._id}`);
     }
   };
