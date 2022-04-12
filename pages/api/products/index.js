@@ -31,7 +31,7 @@ export default async function handler(req, res) {
           msg: error,
         });
       }
-    case "UPDATE":
+    case "PATCH":
       //shop: delete불가. shop status만 변경가능
       try {
         const deleted = await db.collection("shops").deleteOne({ _id: id });

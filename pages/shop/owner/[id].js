@@ -2,9 +2,10 @@ import styles from "./Shop.module.css";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useRef, useState } from "react";
-import Table from "../../component/Table";
-import Modal from "../../component/Modal";
-import CustomsInput from "../../component/CustomsInput";
+import Table from "../../../component/Table";
+import Modal from "../../../component/Modal";
+import CustomsInput from "../../../component/CustomsInput";
+import OwnerOrderTable from "../../../component/OwnerOrderTable";
 export default function Shop(props) {
   const router = useRouter();
   const { id } = router.query;
@@ -106,7 +107,7 @@ export default function Shop(props) {
 
       <div className={styles.dataContainer}>
         <div>This is Our Order</div>
-        {orders.length > 0 && <Table datalist={orders} />}
+        {orders.length > 0 && <OwnerOrderTable datalist={orders} callback={refetchData} />}
       </div>
       {openModal && (
         <Modal
