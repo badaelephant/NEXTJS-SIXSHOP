@@ -10,7 +10,7 @@ export default function Login() {
   const [role, setRole] = useState("");
   const handleLogin = async (e) => {
     e.preventDefault();
-    const result = await axios.post("/api/users/login", { email, password, role }).catch(() => alert("login failed"));
+    const result = await axios.post("/api/auth/login", { email, password, role }).catch(() => alert("login failed"));
     console.log("result");
     console.log(result);
     if (result?.data?.success) {
@@ -18,8 +18,13 @@ export default function Login() {
       let userId = userInfo._id;
       setCookie("userId", userId);
 
-      if (userInfo.role == "owner") router.push(`/owner/${userId}`);
-      else router.push(`/customer/${userId}`);
+      if (userInfo.role == "owner") {
+        console.log("role =>owner");
+        router.push("/owner");
+      } else {
+        console.log("role =>owner");
+        router.push("/customer");
+      }
     }
   };
 

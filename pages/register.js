@@ -13,7 +13,7 @@ export default function Register() {
     if (name == "" || email == "" || password == "") {
       alert("please write down all information correctly");
     } else {
-      const result = await axios.post("/api/users/register", { name, email, password, role }).catch(() => {
+      const result = await axios.post("/api/auth/register", { name, email, password, role }).catch(() => {
         alert("register failed");
       });
       if (result?.data?.success) {

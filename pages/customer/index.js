@@ -61,8 +61,8 @@ export default function CustomerPage(props) {
 }
 
 export async function getServerSideProps(context) {
-  const { id } = context.query;
-  console.log(process.env.BASE_URL, id);
+  const id = context.req.cookies["userId"];
+  if (!id) return { success: false, userInfo: {}, shops: [] };
   const result = await axios.get(`${process.env.BASE_URL}/api/users/${id}`);
   if (result.data?.success) {
     let userData = result.data.data;
