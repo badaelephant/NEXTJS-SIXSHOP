@@ -9,7 +9,7 @@ export default function OrderTable({ products, orderInfo }) {
         <thead>
           <tr>
             {Object.keys(products[0]).map((key) => (
-              <th>{key}</th>
+              <th key={key}>{key}</th>
             ))}
             <th>Q</th>
           </tr>

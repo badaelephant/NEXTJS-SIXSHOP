@@ -6,12 +6,18 @@ export default function Modal({ fields, defaultData, collection, setOpenModal, c
   const [categories, setCategories] = useState([]);
   const inputs = useRef({});
   useEffect(() => {
-    if (data) setCategories(data.categories);
-    inputs.current = defaultData;
-    if (data)
+    console.log("defaultData====>", defaultData);
+    if (data) {
+      setCategories(data.categories);
       for (const [key, value] of Object.entries(data)) {
         inputs.current[key] = value;
       }
+    }
+    if (defaultData) {
+      for (const [key, value] of Object.entries(defaultData)) {
+        inputs.current[key] = value;
+      }
+    }
   }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -63,9 +69,15 @@ export default function Modal({ fields, defaultData, collection, setOpenModal, c
           {fields.map((field) => (
             <div key={field} className={styles.fieldPart}>
               <div style={{ width: "100px" }}>{field}</div>
-              {field == "collectionName" && <Selectbox name={field} options={["customers", "products", "orders"]} />}
+              {field == "collectionName" && (
+                <Selectbox name={field} options={["customers", "products", "orders"]} inputs={inputs.current} />
+              )}
               {field == "fieldType" && (
-                <Selectbox name={field} options={["String", "Number", "Boolean", "Array", "Buffer", "Date", "ObjectId", "Mixed"]} />
+                <Selectbox
+                  name={field}
+                  options={["String", "Number", "Boolean", "Array", "Buffer", "Date", "ObjectId", "Mixed"]}
+                  inputs={inputs.current}
+                />
               )}
               {field == "categories" && (
                 <>
@@ -76,7 +88,7 @@ export default function Modal({ fields, defaultData, collection, setOpenModal, c
                   <div style={{ display: "flex", width: "200px", flexDirection: "column" }}>
                     {categories.map((category) => {
                       return (
-                        <div style={{ display: "flex", marginTop: "5px", marginRight: "10px" }}>
+                        <div style={{ display: "flex", marginTop: "5px", marginRight: "10px" }} key={category}>
                           <div style={{ marginLeft: "10px" }}>-</div>
                           <div style={{ width: "100px", marginLeft: "10px" }}>{category}</div>
                           <button style={{ marginLeft: "5px" }} onClick={() => deleteCategory(category)} type="button">

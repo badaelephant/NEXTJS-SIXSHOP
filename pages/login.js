@@ -20,10 +20,10 @@ export default function Login() {
 
       if (userInfo.role == "owner") {
         console.log("role =>owner");
-        router.push("/owner");
+        router.push(`/owner/${userId}`);
       } else {
         console.log("role =>owner");
-        router.push("/customer");
+        router.push(`/customer/${userId}`);
       }
     }
   };

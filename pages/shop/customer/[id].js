@@ -53,6 +53,7 @@ export default function Shop(props) {
     });
     purchaseInfo.products = products;
     purchaseInfo.price = totalprice;
+    console.log("purchaseInfo", purchaseInfo);
     if (products.length > 0) {
       const result = await axios.post(`/api/orders`, purchaseInfo).catch(() => {
         alert("order failed");

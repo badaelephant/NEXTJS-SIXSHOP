@@ -41,7 +41,6 @@ export default function Shop(props) {
     if (result.data?.success) {
       console.log("result.data.data", result.data.data);
       let shopData = result.data.data;
-      //TODO : useSWR로 실시간 데이터 페칭
 
       setCustoms(shopData.customs);
       setCustomers(shopData.customers);
@@ -51,7 +50,6 @@ export default function Shop(props) {
   };
   const onClickCreate = async (item) => {
     if (item === "customs") {
-      //custom create 고정
       modalInfo.current = {
         title: item,
         fields: ["collectionName", "fieldName", "fieldType"],
@@ -59,7 +57,6 @@ export default function Shop(props) {
         collection: item,
       };
     } else {
-      //products
       let fieldList = [];
       customs.filter((custom) => custom.collectionName === item && fieldList.push(custom.fieldName));
       console.log(fieldList);

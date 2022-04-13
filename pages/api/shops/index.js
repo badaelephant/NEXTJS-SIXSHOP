@@ -9,6 +9,7 @@ export default async function handler(req, res) {
 
   switch (method) {
     case "POST":
+      console.log(req.body);
       try {
         const createdShop = await db.collection("shops").insertOne({ _id: shopId, ...req.body });
         return res.status(200).json({

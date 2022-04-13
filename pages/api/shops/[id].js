@@ -8,6 +8,7 @@ export default async function handler(req, res) {
 
   switch (method) {
     case "GET":
+      console.log("get shops");
       try {
         const shop = await db.collection("shops").findOne({ _id: id });
 

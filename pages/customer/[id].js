@@ -1,17 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import styles from "./OwnerPage.module.css";
+import styles from "./CustomerPage.module.css";
 import Modal from "../../component/Modal";
-export default function OwnerPage(props) {
+export default function CustomerPage(props) {
+  console.log(props);
   const router = useRouter();
   const { id } = router.query;
   const [openModal, setOpenModal] = useState(false);
   const [shopData, setShopData] = useState(props.shops);
-
-  const goShopDetail = (id) => {
-    router.push(`/shop/owner/${id}`);
-  };
   const refetchData = async () => {
     console.log("refetchData");
     const result = await axios.get(`/api/users/${id}`);
@@ -20,9 +17,12 @@ export default function OwnerPage(props) {
       setShopData(userData.shops);
     }
   };
+  const goShopDetail = (id) => {
+    router.push(`/shop/customer/${id}`);
+  };
   return (
     <div className={styles.root}>
-      <div>OwnerPage</div>
+      <div>CustomerPage</div>
       {props.success && (
         <div className={styles.userContainer}>
           <div className={styles.userInfo}>
@@ -40,8 +40,7 @@ export default function OwnerPage(props) {
         </div>
       )}
       <div className={styles.shopContainer}>
-        <button onClick={() => setOpenModal(true)}>Create Shop</button>
-        <div style={{ textAlign: "center", marginBottom: "20px" }}>//////////////////////////Shop List////////////////////////////</div>
+        <div>-----ShopList-----Click to go in</div>
         {shopData.map((shop) => (
           <button key={shop._id} onClick={() => goShopDetail(shop._id)}>
             {shop.name}
@@ -50,7 +49,6 @@ export default function OwnerPage(props) {
       </div>
       {openModal && (
         <Modal
-          title={"Create Shop"}
           setOpenModal={setOpenModal}
           fields={["name", "location"]}
           defaultData={{ ownerId: id }}
@@ -63,9 +61,7 @@ export default function OwnerPage(props) {
 }
 
 export async function getServerSideProps(context) {
-  const id = context.req.cookies["userId"];
-  if (!id) return { success: false, userInfo: {}, shops: [] };
-  console.log(process.env.BASE_URL, id);
+  const { id } = context.query;
   const result = await axios.get(`${process.env.BASE_URL}/api/users/${id}`);
   if (result.data?.success) {
     let userData = result.data.data;

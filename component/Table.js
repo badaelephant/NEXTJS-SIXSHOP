@@ -15,7 +15,7 @@ export default function Table({ datalist, checkIdx }) {
           <tr>
             <th class="header" width="30"></th>
             {Object.keys(datalist[0]).map((key) => (
-              <th>{key}</th>
+              <th key={key}>{key}</th>
             ))}
           </tr>
         </thead>

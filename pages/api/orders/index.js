@@ -9,10 +9,12 @@ export default async function handler(req, res) {
   switch (method) {
     case "POST":
       const { customer, store } = req.body;
+      console.log(req.body);
       try {
         const createdOrder = await db.collection("orders").insertOne({ _id: orderId, ...req.body });
         if (createdOrder) {
           const user = await db.collection("users").findOne({ _id: customer });
+          console.log(user);
           await db
             .collection("customers")
             .update(
