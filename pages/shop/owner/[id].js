@@ -16,12 +16,13 @@ export default function Shop(props) {
   const [products, setProducts] = useState(props.data.products);
   const [orders, setOrders] = useState(props.data.orders);
   const [openModal, setOpenModal] = useState(false);
+  const checkIdx = useRef([]);
   const modalInfo = useRef({});
 
   const updateCustom = async (custom, fieldName) => {
     console.log("fieldName", fieldName);
     if (fieldName !== custom.fieldName) {
-      const result = await axios.patch(`/api/customs/${custom._id}`, { fieldName });
+      const result = await axios.patch(`/api/customs/${custom._id}`, { fieldName }).catch(() => alert("update custom failed"));
       if (result.data?.success) {
         refetchData();
       }
@@ -29,14 +30,14 @@ export default function Shop(props) {
   };
   const deleteCustom = async (custom) => {
     console.log("custom", custom);
-    const result = await axios.delete(`/api/customs/${custom._id}`);
+    const result = await axios.delete(`/api/customs/${custom._id}`).catch(() => alert("delete custom failed"));
     if (result.data?.success) {
       refetchData();
     }
   };
   const refetchData = async () => {
     console.log("refetchData");
-    const result = await axios.get(`/api/shops/${id}`);
+    const result = await axios.get(`/api/shops/${id}`).catch(() => alert("refetch data failed"));
     if (result.data?.success) {
       console.log("result.data.data", result.data.data);
       let shopData = result.data.data;
@@ -61,7 +62,7 @@ export default function Shop(props) {
       //products
       let fieldList = [];
       customs.filter((custom) => custom.collectionName === item && fieldList.push(custom.fieldName));
-
+      console.log(fieldList);
       modalInfo.current = {
         title: item,
         fields: ["name", "price", "categories", ...fieldList],
@@ -71,11 +72,31 @@ export default function Shop(props) {
     }
     setOpenModal(true);
   };
+  const onClickUpdate = async (item, idx) => {
+    console.log(checkIdx.current, products[0]);
+    let checkedIndex = checkIdx.current;
+    if (checkedIndex.length == 1) {
+      let fieldList = [];
+      customs.filter((custom) => custom.collectionName === item && fieldList.push(custom.fieldName));
+      console.log(fieldList);
+      let idx = checkedIndex[0];
+      modalInfo.current = {
+        title: item,
+        fields: ["name", "price", "categories", ...fieldList],
+        defaultData: { store: id },
+        data: products[idx],
+        collection: item,
+      };
+      setOpenModal(true);
+    } else {
+      alert("please choose one item to update");
+    }
+  };
   return (
     <div className={styles.root}>
       <div className={styles.titleContainer}>
-        <div>///////////Product////////////</div>
-        <div>This is Shop Page</div>
+        <div>///////////This is Shop Page////////////</div>
+
         {props.success && (
           <div>
             <div>name: {shop.name}</div>
@@ -106,7 +127,10 @@ export default function Shop(props) {
           Create Product
         </button>
         {products.length > 0 ? (
-          <Table datalist={products} />
+          <>
+            <button onClick={() => onClickUpdate("products")}>Update Product</button>
+            <Table datalist={products} checkIdx={checkIdx} />
+          </>
         ) : (
           <div style={{ width: "100%", textAlign: "center", marginTop: "30px", color: "red" }}>There are no Products...</div>
         )}
@@ -136,6 +160,7 @@ export default function Shop(props) {
           defaultData={modalInfo.current.defaultData}
           collection={modalInfo.current.collection}
           callback={refetchData}
+          data={modalInfo.current.data}
         />
       )}
     </div>

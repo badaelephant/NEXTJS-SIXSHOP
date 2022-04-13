@@ -11,10 +11,15 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     const result = await axios.post("/api/users/login", { email, password, role }).catch(() => alert("login failed"));
+    console.log("result");
+    console.log(result);
     if (result?.data?.success) {
       const userInfo = result.data.data;
-      setCookie("userId", userInfo._id);
-      router.push(`/${userInfo.role}/${userInfo._id}`);
+      let userId = userInfo._id;
+      setCookie("userId", userId);
+
+      if (userInfo.role == "owner") router.push(`/owner/${userId}`);
+      else router.push(`/customer/${userId}`);
     }
   };
 
@@ -22,9 +27,9 @@ export default function Login() {
     <div className={styles.root}>
       <form className={styles.form} onSubmit={handleLogin}>
         <label>email</label>
-        <input onChange={(e) => setEmail(e.currentTarget.value)} value={email} />
+        <input onChange={(e) => setEmail(e.currentTarget.value)} value={email} type="email" />
         <label>password</label>
-        <input onChange={(e) => setPassword(e.currentTarget.value)} value={password} />
+        <input onChange={(e) => setPassword(e.currentTarget.value)} value={password} type="password" />
         <div>
           <input type="radio" name="role" value="owner" onChange={() => setRole("owner")} />
           <label>Owner</label>

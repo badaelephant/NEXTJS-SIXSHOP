@@ -9,7 +9,6 @@ export default async function handler(req, res) {
 
   switch (method) {
     case "POST":
-      console.log("createShop", req.body);
       try {
         const createdShop = await db.collection("shops").insertOne({ _id: shopId, ...req.body });
         return res.status(200).json({
@@ -25,7 +24,6 @@ export default async function handler(req, res) {
       }
 
     case "GET":
-      console.log("shop => get All Data");
       try {
         const shops = await db.collection("shops").find({}).toArray();
 

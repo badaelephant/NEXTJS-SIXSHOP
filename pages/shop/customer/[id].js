@@ -53,8 +53,16 @@ export default function Shop(props) {
     });
     purchaseInfo.products = products;
     purchaseInfo.price = totalprice;
-    const result = await axios.post(`/api/orders`, purchaseInfo);
-    console.log("result", result);
+    if (products.length > 0) {
+      const result = await axios.post(`/api/orders`, purchaseInfo).catch(() => {
+        alert("order failed");
+      });
+      if (result) {
+        refetchData();
+      }
+    } else {
+      alert("please purchase more than one item");
+    }
   };
   return (
     <div className={styles.root}>

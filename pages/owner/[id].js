@@ -63,6 +63,7 @@ export default function OwnerPage(props) {
 }
 
 export async function getServerSideProps(context) {
+  console.log("here in owner");
   const { id } = context.query;
   console.log(process.env.BASE_URL, id);
   const result = await axios.get(`${process.env.BASE_URL}/api/users/${id}`);

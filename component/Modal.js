@@ -1,22 +1,33 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./Modal.module.css";
 import Selectbox from "./SelectBox";
-export default function Modal({ fields, defaultData, collection, setOpenModal, callback, title }) {
+export default function Modal({ fields, defaultData, collection, setOpenModal, callback, title, data }) {
   const [categories, setCategories] = useState([]);
+  const inputs = useRef({});
+  useEffect(() => {
+    if (data) setCategories(data.categories);
+    inputs.current = defaultData;
+    if (data)
+      for (const [key, value] of Object.entries(data)) {
+        inputs.current[key] = value;
+      }
+  }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let inputs = defaultData;
+
     let failed = false;
-    fields.forEach((field, idx) => {
-      if (field == "categories") inputs[field] = categories;
-      else {
-        inputs[field] = e.target[idx].value;
-        if (e.target[idx].value === "") failed = true;
-      }
-    });
+    console.log(inputs.current);
+    if (fields.includes("categories")) inputs.current["categories"] = categories;
+
+    for (const [key, value] of Object.entries(inputs.current)) {
+      if (value === "") failed = true;
+    }
     if (!failed) {
-      let result = await axios.post(`/api/${collection}`, { ...inputs }).catch(() => alert(`${collection} create failed`));
+      console.log(inputs.current);
+      let result = data
+        ? await axios.patch(`/api/${collection}/${data._id}`, { ...inputs.current }).catch(() => alert(`${collection} create failed`))
+        : await axios.post(`/api/${collection}`, { ...inputs.current }).catch(() => alert(`${collection} create failed`));
       if (result?.data?.success) callback();
       setOpenModal(false);
     } else {
@@ -77,9 +88,19 @@ export default function Modal({ fields, defaultData, collection, setOpenModal, c
                   </div>
                 </>
               )}
-              {field !== "collectionName" && field !== "fieldType" && field !== "categories" && (
-                <input style={{ width: "200px" }} name={field} />
-              )}
+              {field !== "collectionName" &&
+                field !== "fieldType" &&
+                field !== "categories" &&
+                (data ? (
+                  <input
+                    style={{ width: "200px" }}
+                    name={field}
+                    defaultValue={data[field]}
+                    onChange={(e) => (inputs.current[field] = e.currentTarget.value)}
+                  />
+                ) : (
+                  <input style={{ width: "200px" }} name={field} onChange={(e) => (inputs.current[field] = e.currentTarget.value)} />
+                ))}
             </div>
           ))}
           <button className={styles.button} type="submit">
