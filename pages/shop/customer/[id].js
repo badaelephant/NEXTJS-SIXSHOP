@@ -26,7 +26,6 @@ export default function Shop(props) {
     if (result.data?.success) {
       console.log("result.data.data", result.data.data);
       let shopData = result.data.data;
-      //TODO : useSWR로 실시간 데이터 페칭
 
       setProducts(shopData.products);
       setOrders(shopData.orders);

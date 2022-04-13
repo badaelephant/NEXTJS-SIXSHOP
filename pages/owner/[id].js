@@ -41,7 +41,7 @@ export default function OwnerPage(props) {
       )}
       <div className={styles.shopContainer}>
         <button onClick={() => setOpenModal(true)}>Create Shop</button>
-        <div style={{ textAlign: "center", marginBottom: "20px" }}>//////////////////////////Shop List////////////////////////////</div>
+        <div style={{ textAlign: "center", marginBottom: "20px" }}>Shop List</div>
         {shopData.map((shop) => (
           <button key={shop._id} onClick={() => goShopDetail(shop._id)}>
             {shop.name}

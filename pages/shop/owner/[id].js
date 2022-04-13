@@ -92,7 +92,7 @@ export default function Shop(props) {
   return (
     <div className={styles.root}>
       <div className={styles.titleContainer}>
-        <div>///////////This is Shop Page////////////</div>
+        <div>This is Shop Page</div>
 
         {props.success && (
           <div>
@@ -102,7 +102,7 @@ export default function Shop(props) {
         )}
       </div>
       <div className={styles.dataContainer}>
-        <div>/////////Custom Field////////</div>
+        <div>Custom Field</div>
         <button style={{ marginBottom: "20px" }} onClick={() => onClickCreate("customs")}>
           Create Custom Field
         </button>
@@ -119,7 +119,7 @@ export default function Shop(props) {
         )}
       </div>
       <div className={styles.dataContainer}>
-        <div>///////////Product////////////</div>
+        <div>Product</div>
         <button style={{ marginBottom: "20px" }} onClick={() => onClickCreate("products")}>
           Create Product
         </button>
@@ -133,7 +133,7 @@ export default function Shop(props) {
         )}
       </div>
       <div className={styles.dataContainer}>
-        <div>///////////Customer////////////</div>
+        <div>Customer</div>
         {customers.length > 0 ? (
           <Table datalist={customers} />
         ) : (
@@ -142,7 +142,7 @@ export default function Shop(props) {
       </div>
 
       <div className={styles.dataContainer}>
-        <div>/////////////Order/////////////</div>
+        <div>Order</div>
         {orders.length > 0 ? (
           <OwnerOrderTable datalist={orders} callback={refetchData} />
         ) : (
