@@ -5,20 +5,23 @@ module.exports = async function handler(req, res) {
   const db = client.db("sixshop");
   const userId = `userId-${new Date().valueOf()}`;
   const { name, role } = req.body;
-  console.log("role", role);
+  console.log("role===>", role);
   if (role == "") {
+    console.log("norole");
     return res.status(400).json({
       success: false,
       msg: "Please select role between owner and customer",
     });
   }
   if (role !== "owner" && role !== "customer") {
+    console.log("role!!error", role);
     return res.status(400).json({
       success: false,
       msg: "Please select role between owner and customer",
     });
   }
   try {
+    console.log("user find===>", { name, role });
     const user = await db.collection("users").findOne({ name, role });
     console.log("user==>", user);
     if (user) {
