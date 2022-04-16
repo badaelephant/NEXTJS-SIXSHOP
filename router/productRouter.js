@@ -4,6 +4,7 @@ const patchProduct = require("../pages/api/products/patchProduct");
 const getAllProductsOfShop = require("../pages/api/products/getAllProductsOfShop.js");
 const getAllProducts = require("../pages/api/products/getAllProducts.js");
 const router = express.Router();
+console.log("productRouter");
 /**
  * @swagger
  * tags:

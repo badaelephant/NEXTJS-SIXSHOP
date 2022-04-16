@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import styles from "./OwnerPage.module.css";
 import Modal from "../../component/Modal";
+import Nav from "../../component/Nav";
 export default function OwnerPage(props) {
   const router = useRouter();
   const { id } = router.query;
@@ -22,6 +23,7 @@ export default function OwnerPage(props) {
   };
   return (
     <div className={styles.root}>
+      <Nav />
       <div>OwnerPage</div>
       {props.success && (
         <div className={styles.userContainer}>

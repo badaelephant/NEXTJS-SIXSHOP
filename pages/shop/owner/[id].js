@@ -6,6 +6,7 @@ import Table from "../../../component/Table";
 import Modal from "../../../component/Modal";
 import CustomsInput from "../../../component/CustomsInput";
 import OwnerOrderTable from "../../../component/OwnerOrderTable";
+import Nav from "../../../component/Nav";
 export default function Shop(props) {
   const router = useRouter();
   const { id } = router.query;
@@ -91,6 +92,7 @@ export default function Shop(props) {
   };
   return (
     <div className={styles.root}>
+      <Nav />
       <div className={styles.titleContainer}>
         <div>This is Shop Page</div>
 

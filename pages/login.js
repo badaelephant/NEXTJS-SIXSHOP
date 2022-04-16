@@ -10,15 +10,14 @@ export default function Login() {
   const [role, setRole] = useState("");
   const handleLogin = async (e) => {
     e.preventDefault();
-    const result = await axios.post("/api/auth/login", { email, password, role }).catch(() => alert("login failed"));
+    const result = await axios.post("/api/users/login", { email, password, role }).catch(() => alert("login failed"));
     console.log("result");
     console.log(result);
     if (result?.data?.success) {
-      const userInfo = result.data.data;
-      let userId = userInfo._id;
+      const userId = result.data.id;
       setCookie("userId", userId);
 
-      if (userInfo.role == "owner") {
+      if (role == "owner") {
         console.log("role =>owner");
         router.push(`/owner/${userId}`);
       } else {

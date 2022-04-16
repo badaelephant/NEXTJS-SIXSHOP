@@ -8,6 +8,7 @@ import CustomsInput from "../../../component/CustomsInput";
 import PurchaseList from "../../../component/PurchaseList";
 import OrderTable from "../../../component/OrderTable";
 import { getCookie } from "../../../lib/cookie";
+import Nav from "../../../component/Nav";
 export default function Shop(props) {
   const router = useRouter();
   const { id } = router.query;
@@ -66,6 +67,7 @@ export default function Shop(props) {
   };
   return (
     <div className={styles.root}>
+      <Nav />
       <div className={styles.titleContainer}>
         <div>This is Shop Page</div>
         {props.success && (

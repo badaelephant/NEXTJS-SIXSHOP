@@ -1,6 +1,7 @@
 const clientPromise = require("../../../middlewares/database");
 
 module.exports = async function handler(req, res) {
+  console.log("patchProduct");
   const id = req.params.id;
   const client = await clientPromise;
   const db = client.db("sixshop");
@@ -14,16 +15,18 @@ module.exports = async function handler(req, res) {
       field[key] = value;
     }
     const productResult = await db.collection("products").findOne({ name });
-    if (productResult)
-      return res.status(400).json({
-        success: false,
-        msg: "There are product with same name",
-      });
-    else {
+    console.log("productResult", productResult);
+    if (productResult) {
+      console.log("field", field);
       await db.collection("products").updateOne({ _id: id }, { $set: field });
       return res.status(200).json({
         success: true,
         msg: "Product Updated",
+      });
+    } else {
+      return res.status(404).json({
+        success: false,
+        msg: "There are No Product",
       });
     }
   } catch (error) {

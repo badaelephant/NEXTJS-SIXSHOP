@@ -1,1 +1,20 @@
-
+.table {
+  border-collapse: collapse;
+  text-align: center;
+  line-height: 1;
+  margin: 20px 10px;
+}
+.table th {
+  width: 100px;
+  padding: 10px;
+  font-weight: bold;
+  vertical-align: top;
+  border: 1px solid #ccc;
+}
+.table td {
+  width: 100px;
+  padding: 10px;
+  vertical-align: top;
+  border: 1px solid #ccc;
+  font-size: 12px;
+}

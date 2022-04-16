@@ -32,7 +32,7 @@ export default function Modal({ fields, defaultData, collection, setOpenModal, c
     if (!failed) {
       console.log(inputs.current);
       let result = data
-        ? await axios.patch(`/api/${collection}/${data._id}`, { ...inputs.current }).catch(() => alert(`${collection} create failed`))
+        ? await axios.patch(`/api/${collection}/${data._id}`, { ...inputs.current }).catch(() => alert(`${collection} update failed`))
         : await axios.post(`/api/${collection}`, { ...inputs.current }).catch(() => alert(`${collection} create failed`));
       if (result?.data?.success) callback();
       setOpenModal(false);

@@ -1,6 +1,7 @@
 const clientPromise = require("../../../middlewares/database");
 
 module.exports = async function handler(req, res) {
+  console.log("createProduct");
   const id = req.params.id;
   const client = await clientPromise;
   const db = client.db("sixshop");

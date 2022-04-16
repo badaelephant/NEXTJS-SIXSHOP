@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import styles from "./CustomerPage.module.css";
 import Modal from "../../component/Modal";
+import Nav from "../../component/Nav";
 export default function CustomerPage(props) {
   console.log(props);
   const router = useRouter();
@@ -22,6 +23,7 @@ export default function CustomerPage(props) {
   };
   return (
     <div className={styles.root}>
+      <Nav />
       <div>CustomerPage</div>
       {props.success && (
         <div className={styles.userContainer}>
