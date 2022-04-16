@@ -1,28 +1,25 @@
-import clientPromise from "../../../middlewares/database";
+const clientPromise = require("../../../middlewares/database");
 
-export default async function handler(req, res) {
-  const { id } = req.query;
-  const method = req.method;
+module.exports = async function handler(req, res) {
   const client = await clientPromise;
   const db = client.db("sixshop");
   const shopId = `shop-${new Date().valueOf()}`;
-
+  try {
+    const createdShop = await db.collection("shops").insertOne({ _id: shopId, ...req.body });
+    return res.status(200).json({
+      success: true,
+      msg: "New Shop Created",
+      data: createdShop,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      msg: error,
+    });
+  }
   switch (method) {
     case "POST":
       console.log(req.body);
-      try {
-        const createdShop = await db.collection("shops").insertOne({ _id: shopId, ...req.body });
-        return res.status(200).json({
-          success: true,
-          msg: "New Shop Created",
-          data: createdShop,
-        });
-      } catch (error) {
-        return res.status(500).json({
-          success: false,
-          msg: error,
-        });
-      }
 
     case "GET":
       try {
@@ -47,4 +44,4 @@ export default async function handler(req, res) {
     default:
       break;
   }
-}
+};

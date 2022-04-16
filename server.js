@@ -1,0 +1,24 @@
+const express = require("express");
+const next = require("next");
+const port = 3000;
+const dev = process.env.NODE_ENV !== "production";
+const app = next({ dev });
+const handle = app.getRequestHandler();
+const apiRouter = require("./router/apiRouter");
+const { swaggerUi, specs } = require("./lib/swagger");
+const cors = require("cors");
+app.prepare().then(() => {
+  const server = express();
+  server.use(cors());
+  server.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+
+  server.use("/api", apiRouter);
+
+  server.all("*", (req, res) => {
+    return handle(req, res);
+  });
+  server.listen(port, (err) => {
+    if (err) throw err;
+    console.log(`> ✨Ready on http://localhost:${port}`);
+  });
+});
