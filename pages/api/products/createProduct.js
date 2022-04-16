@@ -18,7 +18,7 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({
         success: true,
         msg: "New Product Created",
-        data: createdProduct,
+        data: productId,
       });
     }
   } catch (error) {

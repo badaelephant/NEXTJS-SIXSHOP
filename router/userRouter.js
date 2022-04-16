@@ -2,6 +2,7 @@ const express = require("express");
 const register = require("../pages/api/users/register");
 const login = require("../pages/api/users/login");
 const getUser = require("../pages/api/users/getUser");
+const getAllUsers = require("../pages/api/users/getAllUsers");
 const patchUser = require("../pages/api/users/patchUser");
 const router = express.Router();
 
@@ -9,7 +10,7 @@ const router = express.Router();
  * @swagger
  * tags:
  *   name: User
- *   description: 유저의 가입, 로그인, 정보조회, 정보수정
+ *   description: 유저의 가입, 로그인, 정보조회, 정보수정, 전체 유저조회
  * definitions:
  *   User:
  *     type: "object"
@@ -43,6 +44,15 @@ const router = express.Router();
  *         type: "boolean"
  *       msg:
  *         type: "string"
+ *   ApiResponsesWithId:
+ *     type: "object"
+ *     properties:
+ *       success:
+ *         type: "boolean"
+ *       msg:
+ *         type: "string"
+ *       id:
+ *         type: "string"
  *   ApiResponsesWithDataUser:
  *     type: "object"
  *     properties:
@@ -51,6 +61,15 @@ const router = express.Router();
  *       data:
  *         type: "object"
  *         $ref: "#/definitions/UserAndShopList"
+ *   ApiResponsesWithDataUserList:
+ *     type: "object"
+ *     properties:
+ *       success:
+ *         type: "boolean"
+ *       data:
+ *         type: "array"
+ *         items:
+ *           $ref: "#/definitions/User"
  *   UserAndShopList:
  *     type: "object"
  *     properties:
@@ -106,7 +125,7 @@ const router = express.Router();
  *       "200":
  *         description: "successful operation"
  *         schema:
- *           $ref: "#/definitions/ApiResponses"
+ *           $ref: "#/definitions/ApiResponsesWithId"
  *       "400":
  *         description: "Duplicate User Eamil & Role"
  *         schema:
@@ -169,7 +188,7 @@ router.post("/login", login);
  *     parameters:
  *     - name: "id"
  *       in: "path"
- *       description: "User's Id [try => userId-1649855975417]"
+ *       description: "User's Id"
  *       required: true
  *       type: "string"
  *     responses:
@@ -183,6 +202,34 @@ router.post("/login", login);
  *           $ref: "#/definitions/ErrorResponses"
  */
 router.get("/:id", getUser);
+
+/**
+ * @swagger
+ * /api/users:
+ *   get:
+ *     tags:
+ *     - "User"
+ *     summary: "Get All Users"
+ *     description: "Returns All User List of Six Shop"
+ *     produces:
+ *     - "application/json"
+ *     parameters:
+ *     - name: "role"
+ *       in: "query"
+ *       description: "owner or customer or all"
+ *       type: "string"
+ *     responses:
+ *       "200":
+ *         description: "successful operation"
+ *         schema:
+ *           $ref: "#/definitions/ApiResponsesWithDataUserList"
+ *       "404":
+ *         description: "Unable to find user with same userId"
+ *         schema:
+ *           $ref: "#/definitions/ErrorResponses"
+ */
+router.get("/", getAllUsers);
+
 /**
  * @swagger
  * /api/users/{id}:
@@ -196,7 +243,7 @@ router.get("/:id", getUser);
  *     parameters:
  *     - name: "id"
  *       in: "path"
- *       description: "User's Id [try => userId-1649855975417]"
+ *       description: "try with newly created Id"
  *       required: true
  *       type: "string"
  *     - in: "body"

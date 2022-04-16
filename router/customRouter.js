@@ -2,6 +2,7 @@ const express = require("express");
 const createCustom = require("../pages/api/customs/createCustom");
 const patchCustom = require("../pages/api/customs/patchCustom");
 const getCustoms = require("../pages/api/customs/getCustoms");
+const getCustomsById = require("../pages/api/customs/getCustomsById");
 const deleteCustom = require("../pages/api/customs/deleteCustom");
 const router = express.Router();
 /**
@@ -44,19 +45,27 @@ const router = express.Router();
  *     parameters:
  *     - in: "body"
  *       name: "body"
- *       description: "Created custom object"
+ *       description: "Created Custom object. Please put fieldType in between String, Number, Boolean, Array, Date, ObjectId,..."
  *       schema:
- *         store:
- *           type: "string"
- *         fieldName:
- *           type: "string"
- *         fieldType:
- *           type: "string"
+ *         type: "object"
+ *         properties:
+ *           store:
+ *             type: "string"
+ *             required: true
+ *           collectionName:
+ *             type: "string"
+ *             required: true
+ *           fieldName:
+ *             type: "string"
+ *             required: true
+ *           fieldType:
+ *             type: "string"
+ *             required: true
  *     responses:
  *       "200":
  *         description: "successful operation"
  *         schema:
- *           $ref: "#/definitions/ApiResponses"
+ *           $ref: "#/definitions/ApiResponsesWithId"
  *       "400":
  *         description: "Duplicate Custom name"
  *         schema:
@@ -77,14 +86,19 @@ router.post("/", createCustom);
  *     parameters:
  *     - name: "id"
  *       in: "path"
- *       description: "Custom Id [try => custom-1649858530566]"
+ *       description: "Custom Id"
  *       required: true
  *       type: "string"
+ *     - in: "body"
+ *       name: "body"
+ *       description: "Updated Custom object"
  *       schema:
- *         fieldName:
- *           type: "string"
- *         fieldType:
- *           type: "string"
+ *         type: "object"
+ *         properties:
+ *           fieldName:
+ *             type: "string"
+ *           fieldType:
+ *             type: "string"
  *     responses:
  *       "200":
  *         description: "successful operation"
@@ -104,7 +118,7 @@ router.patch("/:id", patchCustom);
 /**
  * @swagger
  * /api/customs/{id}:
- *   patch:
+ *   delete:
  *     tags:
  *     - "Custom"
  *     summary: "Delete Custom"
@@ -114,7 +128,7 @@ router.patch("/:id", patchCustom);
  *     parameters:
  *     - name: "id"
  *       in: "path"
- *       description: "Custom Id [try => custom-1649858530566]"
+ *       description: "Custom Id"
  *       required: true
  *       type: "string"
  *     responses:
@@ -135,15 +149,46 @@ router.delete("/:id", deleteCustom);
  *   get:
  *     tags:
  *     - "Custom"
- *     summary: "Get Custom Fields of Shop"
- *     description: "Get Custom Fields by ShopId"
+ *     summary: "Get Custom Field"
+ *     description: "Get Custom Field"
  *     produces:
  *     - "application/json"
  *     parameters:
  *     - name: "id"
  *       in: "path"
- *       description: "Shop Id [try => shop-1649858530566]"
+ *       description: "custom Id"
  *       required: true
+ *       type: "string"
+ *     responses:
+ *       "200":
+ *         description: "successful operation"
+ *         schema:
+ *           success:
+ *             type: "boolean"
+ *           data:
+ *             type: "object"
+ *             $ref: "#/definitions/Custom"
+ *       "400":
+ *         description: "Unable to find custom with same customId"
+ *         schema:
+ *           $ref: "#/definitions/ErrorResponses"
+ */
+router.get("/:id", getCustomsById);
+
+/**
+ * @swagger
+ * /api/customs:
+ *   get:
+ *     tags:
+ *     - "Custom"
+ *     summary: "Get Custom Fields of Shop"
+ *     description: "Get Custom Fields by ShopId if you don't want specific shop. just put nothing"
+ *     produces:
+ *     - "application/json"
+ *     parameters:
+ *     - name: "shopId"
+ *       in: "query"
+ *       description: "shopId"
  *       type: "string"
  *     responses:
  *       "200":
@@ -155,6 +200,6 @@ router.delete("/:id", deleteCustom);
  *         schema:
  *           $ref: "#/definitions/ErrorResponses"
  */
-router.patch("/:id", getCustoms);
+router.get("/", getCustoms);
 
 module.exports = router;

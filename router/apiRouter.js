@@ -7,6 +7,7 @@ const shopRouter = require("./shopRouter");
 const productRouter = require("./productRouter");
 const orderRouter = require("./orderRouter");
 const customRouter = require("./customRouter");
+const customerRouter = require("./customerRouter");
 const router = express.Router();
 
 // middleware
@@ -15,9 +16,11 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(cookieParser());
 
 // routes
-router.use("/users", userRouter);
-router.use("/shops", shopRouter);
-router.use("/products", productRouter);
-router.use("/orders", orderRouter);
+
+router.use("/customers", customerRouter);
 router.use("/customs", customRouter);
+router.use("/orders", orderRouter);
+router.use("/products", productRouter);
+router.use("/shops", shopRouter);
+router.use("/users", userRouter);
 module.exports = router;

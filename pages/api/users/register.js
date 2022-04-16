@@ -5,6 +5,12 @@ module.exports = async function handler(req, res) {
   const db = client.db("sixshop");
   const userId = `userId-${new Date().valueOf()}`;
   const { name, role } = req.body;
+  if (role !== "owner" || role !== "customer" || role == "") {
+    return res.status(400).json({
+      success: false,
+      msg: "Please select role between owner and customer",
+    });
+  }
   try {
     const user = await db.collection("users").findOne({ name, role });
     if (user) {
@@ -17,6 +23,7 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({
         success: true,
         msg: "New User Created",
+        _id: userId,
       });
     }
   } catch (error) {

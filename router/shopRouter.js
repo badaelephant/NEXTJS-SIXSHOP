@@ -142,7 +142,7 @@ const router = express.Router();
  *       "200":
  *         description: "successful operation"
  *         schema:
- *           $ref: "#/definitions/ApiResponses"
+ *           $ref: "#/definitions/ApiResponsesWithId"
  *       "400":
  *         description: "Duplicate Shop name"
  *         schema:
@@ -160,6 +160,11 @@ router.post("/", createShop);
  *     description: "get ShopList"
  *     produces:
  *     - "application/json"
+ *     parameters:
+ *     - name: "userId"
+ *       in: "query"
+ *       description: "put ownerId if you wanna find out specific shopList, if not put nothing"
+ *       type: "string"
  *     responses:
  *       "200":
  *         description: "successful operation"
@@ -182,7 +187,7 @@ router.get("/", getShop);
  *     parameters:
  *     - name: "id"
  *       in: "path"
- *       description: "User's Id [try => shop-1649858530566]"
+ *       description: "try with shop newly created"
  *       required: true
  *       type: "string"
  *     responses:

@@ -1,6 +1,8 @@
 const express = require("express");
 const createOrder = require("../pages/api/orders/createOrder");
 const patchOrder = require("../pages/api/orders/patchOrder");
+const getMyOrderList = require("../pages/api/orders/getMyOrderList");
+const getShopOrderList = require("../pages/api/orders/getShopOrderList");
 const router = express.Router();
 /**
  * @swagger
@@ -26,6 +28,15 @@ const router = express.Router();
  *         type: "array"
  *         items:
  *           type: "string"
+ *   ApiResponsesWithDataOrder:
+ *     type: "object"
+ *     properties:
+ *       success:
+ *         type: "boolean"
+ *       data:
+ *         type: "array"
+ *         items:
+ *           $ref: "#/definitions/Order"
  */
 
 /**
@@ -60,7 +71,7 @@ const router = express.Router();
  *       "200":
  *         description: "successful operation"
  *         schema:
- *           $ref: "#/definitions/ApiResponses"
+ *           $ref: "#/definitions/ApiResponsesWithId"
  *       "404":
  *         description: "Unable to Order"
  *         schema:
@@ -81,7 +92,7 @@ router.post("/", createOrder);
  *     parameters:
  *     - name: "id"
  *       in: "path"
- *       description: "Order Id [try => order-1649858530566]"
+ *       description: "Order Id"
  *       required: true
  *       type: "string"
  *     responses:
@@ -95,5 +106,61 @@ router.post("/", createOrder);
  *           $ref: "#/definitions/ErrorResponses"
  */
 router.patch("/:id", patchOrder);
+
+/**
+ * @swagger
+ * /api/orders/customer/{id}:
+ *   get:
+ *     tags:
+ *     - "Order"
+ *     summary: "Get All Orders of Customer"
+ *     description: "Get All Orders of CustomerId"
+ *     produces:
+ *     - "application/json"
+ *     parameters:
+ *     - name: "id"
+ *       in: "path"
+ *       description: "Customer Id"
+ *       required: true
+ *       type: "string"
+ *     responses:
+ *       "200":
+ *         description: "successful operation"
+ *         schema:
+ *           $ref: "#/definitions/ApiResponsesWithDataOrder"
+ *       "400":
+ *         description: "Unable to find customer with same userId"
+ *         schema:
+ *           $ref: "#/definitions/ErrorResponses"
+ */
+router.get("/customer/:id", getMyOrderList);
+
+/**
+ * @swagger
+ * /api/orders/shop/{id}:
+ *   get:
+ *     tags:
+ *     - "Order"
+ *     summary: "Get All Orders of Shop"
+ *     description: "Get All Orders of Shop "
+ *     produces:
+ *     - "application/json"
+ *     parameters:
+ *     - name: "id"
+ *       in: "path"
+ *       description: "Shop Id"
+ *       required: true
+ *       type: "string"
+ *     responses:
+ *       "200":
+ *         description: "successful operation"
+ *         schema:
+ *           $ref: "#/definitions/ApiResponsesWithDataOrder"
+ *       "400":
+ *         description: "Unable to find shop with same shopId"
+ *         schema:
+ *           $ref: "#/definitions/ErrorResponses"
+ */
+router.get("/shop/:id", getShopOrderList);
 
 module.exports = router;
