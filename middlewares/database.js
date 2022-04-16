@@ -2,7 +2,7 @@
 
 const { MongoClient } = require("mongodb");
 
-const uri = "mongodb://localhost:27017";
+const uri = process.env.MONGO;
 const options = {
   useUnifiedTopology: true,
   useNewUrlParser: true,
