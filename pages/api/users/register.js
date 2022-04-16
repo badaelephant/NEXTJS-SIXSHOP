@@ -20,13 +20,17 @@ module.exports = async function handler(req, res) {
   }
   try {
     const user = await db.collection("users").findOne({ name, role });
+    console.log("user==>", user);
     if (user) {
+      console.log("userexist==>");
       return res.status(404).json({
         success: false,
         msg: "Same user with name and role exists",
       });
     } else {
+      console.log("user noexist==>", { _id: userId, ...req.body });
       await db.collection("users").insertOne({ _id: userId, ...req.body });
+      console.log("insert succeed==>");
       return res.status(200).json({
         success: true,
         msg: "New User Created",
